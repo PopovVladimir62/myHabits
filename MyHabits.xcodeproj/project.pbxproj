@@ -9,10 +9,11 @@
 /* Begin PBXBuildFile section */
 		E70B6F432A1230A400091A35 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70B6F422A1230A400091A35 /* InfoViewController.swift */; };
 		E70B6F452A12324100091A35 /* HabitsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70B6F442A12324100091A35 /* HabitsViewController.swift */; };
+		E70B6F472A12330C00091A35 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E70B6F462A12330C00091A35 /* Launch Screen.storyboard */; };
+		E70B6F4A2A1236A600091A35 /* UIView + ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70B6F492A1236A600091A35 /* UIView + ext.swift */; };
 		E7D982472A122ECE00576DA5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D982462A122ECE00576DA5 /* AppDelegate.swift */; };
 		E7D982492A122ECE00576DA5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D982482A122ECE00576DA5 /* SceneDelegate.swift */; };
 		E7D982502A122ECE00576DA5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E7D9824F2A122ECE00576DA5 /* Assets.xcassets */; };
-		E7D982532A122ECE00576DA5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7D982512A122ECE00576DA5 /* LaunchScreen.storyboard */; };
 		E7D9825B2A12300900576DA5 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D9825A2A12300900576DA5 /* MainTabBarController.swift */; };
 		E7D9825E2A12304300576DA5 /* Habit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D9825D2A12304300576DA5 /* Habit.swift */; };
 		E7D982602A12305C00576DA5 /* HabitStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D9825F2A12305C00576DA5 /* HabitStore.swift */; };
@@ -21,11 +22,12 @@
 /* Begin PBXFileReference section */
 		E70B6F422A1230A400091A35 /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 		E70B6F442A12324100091A35 /* HabitsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsViewController.swift; sourceTree = "<group>"; };
+		E70B6F462A12330C00091A35 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		E70B6F492A1236A600091A35 /* UIView + ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView + ext.swift"; sourceTree = "<group>"; };
 		E7D982432A122ECE00576DA5 /* MyHabits.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyHabits.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7D982462A122ECE00576DA5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E7D982482A122ECE00576DA5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		E7D9824F2A122ECE00576DA5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		E7D982522A122ECE00576DA5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E7D982542A122ECE00576DA5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E7D9825A2A12300900576DA5 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		E7D9825D2A12304300576DA5 /* Habit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Habit.swift; sourceTree = "<group>"; };
@@ -43,6 +45,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E70B6F482A12368600091A35 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				E70B6F492A1236A600091A35 /* UIView + ext.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		E7D9823A2A122ECE00576DA5 = {
 			isa = PBXGroup;
 			children = (
@@ -65,11 +75,12 @@
 				E7D982462A122ECE00576DA5 /* AppDelegate.swift */,
 				E7D982482A122ECE00576DA5 /* SceneDelegate.swift */,
 				E7D9825A2A12300900576DA5 /* MainTabBarController.swift */,
-				E70B6F442A12324100091A35 /* HabitsViewController.swift */,
 				E70B6F422A1230A400091A35 /* InfoViewController.swift */,
+				E70B6F442A12324100091A35 /* HabitsViewController.swift */,
 				E7D9825C2A12303000576DA5 /* model */,
+				E70B6F482A12368600091A35 /* Extensions */,
 				E7D9824F2A122ECE00576DA5 /* Assets.xcassets */,
-				E7D982512A122ECE00576DA5 /* LaunchScreen.storyboard */,
+				E70B6F462A12330C00091A35 /* Launch Screen.storyboard */,
 				E7D982542A122ECE00576DA5 /* Info.plist */,
 			);
 			path = MyHabits;
@@ -142,7 +153,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E7D982532A122ECE00576DA5 /* LaunchScreen.storyboard in Resources */,
+				E70B6F472A12330C00091A35 /* Launch Screen.storyboard in Resources */,
 				E7D982502A122ECE00576DA5 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -156,6 +167,7 @@
 			files = (
 				E7D9825E2A12304300576DA5 /* Habit.swift in Sources */,
 				E7D982472A122ECE00576DA5 /* AppDelegate.swift in Sources */,
+				E70B6F4A2A1236A600091A35 /* UIView + ext.swift in Sources */,
 				E70B6F452A12324100091A35 /* HabitsViewController.swift in Sources */,
 				E70B6F432A1230A400091A35 /* InfoViewController.swift in Sources */,
 				E7D9825B2A12300900576DA5 /* MainTabBarController.swift in Sources */,
@@ -165,17 +177,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		E7D982512A122ECE00576DA5 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				E7D982522A122ECE00576DA5 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		E7D982552A122ECE00576DA5 /* Debug */ = {

@@ -10,7 +10,7 @@ final class MainTabBarController: UITabBarController {
     
     private func generateTabBar() {
         viewControllers = [
-            createController(viewController: ViewController(), title: "Привычки", image: UIImage(systemName: "checklist")),
+            createController(viewController: HabitsViewController(), title: "Привычки", image: UIImage(systemName: "checklist")),
             createController(viewController: InfoView(), title: "Информация", image: UIImage(systemName: "info.circle.fill"))
         ]
         tabBar.backgroundColor = .white
