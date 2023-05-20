@@ -19,6 +19,7 @@ final class HabitsViewController: UIViewController {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .systemGray3
         collectionView.register(ProgressCollectionViewCell.self, forCellWithReuseIdentifier: ProgressCollectionViewCell.identifier)
+        collectionView.register(NewHabitCollectionViewCell.self, forCellWithReuseIdentifier: NewHabitCollectionViewCell.identifier)
         
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -69,32 +70,44 @@ extension HabitsViewController: UICollectionViewDataSource, UICollectionViewDele
         if section == 0 {
             return 1
         } else {
-            return HabitsStore.shared.habits.count
+            return 1//HabitsStore.shared.habits.count
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.section == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProgressCollectionViewCell.identifier, for: indexPath) as! ProgressCollectionViewCell
-            cell.progressBar.progress = 0.5 //HabitsStore.shared.todayProgress
-            cell.progressLabel.text = "50%"//"\(HabitsStore.shared.todayProgress)"
+            cell.progressBar.progress = HabitsStore.shared.todayProgress
+            cell.progressLabel.text = String(Int(HabitsStore.shared.todayProgress)) + "%"
+
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NewHabitCollectionViewCell.identifier, for: indexPath) as! NewHabitCollectionViewCell
+            cell.counterOfHabits.text = "2"
+            cell.dateOfHabit.text = "22:00"
+            cell.nameOfHabitLabel.text = "Begit"
+            cell.checkmarkView.checked = false
             
             return cell
         }
-        return ProgressCollectionViewCell()
     }
+    
+
     //MARK: - Configure collectionView
     
     private var edgeInset: CGFloat { return 16 }
     private var insetBetweenCells: CGFloat { return 12 }
     
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 2
+    }
     //size of cell
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = collectionView.bounds.width - edgeInset * 2
         if indexPath.section == 0 {
-            let width = collectionView.bounds.width - edgeInset * 2
             return CGSize(width: width, height: 60)
         }  else {
-            return CGSize(width: 343, height: 130)
+            return CGSize(width: width, height: 117)
         }
     }
     

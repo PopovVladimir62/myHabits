@@ -11,5 +11,6 @@ extension UICollectionViewCell {
     enum Metric {
         static let edgeInset: CGFloat = 12
         static let insetBetweenElements: CGFloat = 10
+        static let edgeInsetTwenty: CGFloat = 20
     }
 }
