@@ -34,6 +34,8 @@ final class HabitsViewController: UIViewController {
         addSubviews()
         setupConstrains()
     }
+
+    //MARK: - private
     
     private func prepareViewController() {
         view.backgroundColor = .white
@@ -41,11 +43,17 @@ final class HabitsViewController: UIViewController {
         navigationItem.title = "Сегодня"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
         navigationItem.rightBarButtonItem?.tintColor = .purple
+        self.navigationItem.largeTitleDisplayMode = .always
 
     }
     
     @objc private func addTapped() {
         print("New habit")
+        let newHabit = HabitViewCreate()
+        navigationItem.backBarButtonItem = UIBarButtonItem(
+            title: "Назад", style: .plain, target: nil, action: nil)
+        navigationItem.backBarButtonItem?.tintColor = .purple
+        navigationController?.pushViewController(newHabit, animated: true)
     }
     
     //MARK: - Layout
@@ -84,8 +92,8 @@ extension HabitsViewController: UICollectionViewDataSource, UICollectionViewDele
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NewHabitCollectionViewCell.identifier, for: indexPath) as! NewHabitCollectionViewCell
             cell.counterOfHabits.text = "2"
-            cell.dateOfHabit.text = "22:00"
-            cell.nameOfHabitLabel.text = "Begit"
+            cell.dateOfHabit.text = "каждый день в 08:00"
+            cell.nameOfHabitLabel.text = "Пробежка"
             cell.checkmarkView.checked = false
             
             return cell

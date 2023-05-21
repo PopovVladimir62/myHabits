@@ -18,6 +18,7 @@ class NewHabitCollectionViewCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Название привычки"
         label.textColor = .blue
+        label.numberOfLines = 0
         label.font = UIFont.boldSystemFont(ofSize: 17)
         label.setContentHuggingPriority(.defaultHigh - 1, for: .vertical)
         
