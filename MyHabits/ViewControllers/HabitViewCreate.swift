@@ -14,7 +14,7 @@ class HabitViewCreate: UIViewController {
 
     //MARK: - UI elements
     //habit's name
-    private let nameOfHabitStackView: UIStackView = {
+    let nameOfHabitStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
@@ -24,7 +24,7 @@ class HabitViewCreate: UIViewController {
         return stackView
     }()
     
-    private let titleLabel: UILabel = {
+    let titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.boldSystemFont(ofSize: 13)
@@ -33,7 +33,7 @@ class HabitViewCreate: UIViewController {
         return label
     }()
     
-    private lazy var nameOfHabit: UITextField = {
+    lazy var nameOfHabit: UITextField = {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.placeholder = "Введите название привычки"
@@ -44,7 +44,7 @@ class HabitViewCreate: UIViewController {
     }()
     //habit's color
     
-    private let colorNameLabel: UILabel = {
+    let colorNameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.boldSystemFont(ofSize: 13)
@@ -53,7 +53,7 @@ class HabitViewCreate: UIViewController {
         return label
     }()
     
-    private lazy var colorButton: UIButton = {
+    lazy var colorButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setBackgroundImage(UIImage(systemName: "circle.fill"), for: .normal)
@@ -64,7 +64,7 @@ class HabitViewCreate: UIViewController {
     }()
     //habit's time
     
-    private let timeTitleLabel: UILabel = {
+    let timeTitleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.boldSystemFont(ofSize: 13)
@@ -73,7 +73,7 @@ class HabitViewCreate: UIViewController {
         return label
     }()
     
-    private let timeNameLabel: UILabel = {
+    let timeNameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 17)
@@ -82,17 +82,17 @@ class HabitViewCreate: UIViewController {
         return label
     }()
     
-    private let timeDateLabel: UILabel = {
+    lazy var timeDateLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 17)
         label.textColor = .purple
-        label.text = "11:00"
-        
+        label.text = "часы: минуты"
+
         return label
     }()
     
-    private lazy var timePicker: UIDatePicker = {
+    lazy var timePicker: UIDatePicker = {
         let timePicker = UIDatePicker()
         timePicker.translatesAutoresizingMaskIntoConstraints = false
         timePicker.datePickerMode = .time
@@ -101,6 +101,18 @@ class HabitViewCreate: UIViewController {
         timePicker.addTarget(self, action: #selector(setCurrentTime), for: .valueChanged)
         
         return timePicker
+    }()
+    
+    lazy var deleteButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Удалить привычку", for: .normal)
+        button.setTitleColor(.red, for: .normal)
+        button.isHidden = true
+        
+        button.addTarget(self, action: #selector(deleteHabit), for: .touchUpInside)
+        
+        return button
     }()
     
     //MARK: - Lifecycle
@@ -117,10 +129,16 @@ class HabitViewCreate: UIViewController {
         customizeNavigationBar()
     }
 
-    deinit {
-        print("Killed HabitViewCreate scene")
+    //MARK: - public
+    //navigationbar + button methods
+    func customizeNavigationBar() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: "Сохранить", style: .plain, target: self, action: #selector(saveHabit))
+        navigationItem.rightBarButtonItem?.tintColor = .purple
+        navigationItem.title = "Создать"
     }
-    //MARK: - Private
+    
+    //MARK: private
     private func prepareViewController() {
         view.backgroundColor = .white
         navigationItem.largeTitleDisplayMode = .never
@@ -136,21 +154,15 @@ class HabitViewCreate: UIViewController {
         view.addSubview(timeNameLabel)
         view.addSubview(timeDateLabel)
         view.addSubview(timePicker)
-    }
-    //navigationbar + button methods
-    private func customizeNavigationBar() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: "Сохранить", style: .plain, target: self, action: #selector(saveHabit))
-        navigationItem.rightBarButtonItem?.tintColor = .purple
-        navigationItem.title = "Создать"
+        view.addSubview(deleteButton)
     }
     
-    private func timeFormat() {
+    func timeFormat() {
         dateFormatter.dateFormat = "h:mm a"
         timeDateLabel.text = dateFormatter.string(from: dateOfHabit)
     }
     //MARK: - #selectors
-    @objc private func saveHabit() {
+    @objc func saveHabit() {
         if nameOfHabit.text == "" {
             nameOfHabit.shake()
             return
@@ -177,10 +189,14 @@ class HabitViewCreate: UIViewController {
         self.dateOfHabit = self.timePicker.date
         timeFormat()
     }
+    
+    @objc func deleteHabit() {
+        
+    }
 
     //MARK: - layout
     
-    private func setupConstrains() {
+    func setupConstrains() {
         let safeArea = view.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
             nameOfHabitStackView.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 21),
@@ -204,7 +220,10 @@ class HabitViewCreate: UIViewController {
             timeDateLabel.leadingAnchor.constraint(equalTo: timeNameLabel.trailingAnchor),
             
             timePicker.topAnchor.constraint(equalTo: timeNameLabel.bottomAnchor, constant: Metric.insetBetweenUI),
-            timePicker.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            timePicker.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
+            deleteButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            deleteButton.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -18)
         ])
     }
     

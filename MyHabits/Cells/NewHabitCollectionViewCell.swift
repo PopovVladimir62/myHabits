@@ -11,7 +11,7 @@ protocol addingTodaysDay: AnyObject {
     func takingToday(indexPath: IndexPath, cell: NewHabitCollectionViewCell)
 }
 
-class NewHabitCollectionViewCell: UICollectionViewCell {
+final class NewHabitCollectionViewCell: UICollectionViewCell {
     
     weak var delegate: addingTodaysDay?
     var indexPathCell = IndexPath()

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ProgressCollectionViewCell: UICollectionViewCell {
+final class ProgressCollectionViewCell: UICollectionViewCell {
     
     //MARK: - UI elements
     

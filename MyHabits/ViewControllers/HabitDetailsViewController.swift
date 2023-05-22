@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HabitDetailsViewController: UIViewController {
+final class HabitDetailsViewController: UIViewController {
     
     var numberOfHabit = 0
     var nameOfHabit = "Привычка"
@@ -31,9 +31,12 @@ class HabitDetailsViewController: UIViewController {
         prepareViewController()
         setupConstrains()
     }
-    //MARK: - public
-
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.title = nameOfHabit
+        tabBarController?.tabBar.isHidden = false
+    }
     //MARK: - private
     
     private func prepareViewController() {
@@ -47,7 +50,12 @@ class HabitDetailsViewController: UIViewController {
     }
     
     @objc private func editHabit() {
-        print("editting habit")
+        navigationItem.backBarButtonItem = UIBarButtonItem(
+            title: "Отменить", style: .plain, target: nil, action: nil)
+        navigationItem.backBarButtonItem?.tintColor = .purple
+        let editVC = EditHabitViewController()
+        editVC.numberOfHabit = numberOfHabit
+        navigationController?.pushViewController(editVC, animated: true)
     }
     //MARK: Layout
     private func setupConstrains() {

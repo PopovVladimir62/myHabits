@@ -7,7 +7,7 @@
 
 import UIKit
 
-class DetailsTableViewCell: UITableViewCell {
+final class DetailsTableViewCell: UITableViewCell {
     
     var indexPathCell = 0 // takes the index of the item selection in the collection
     var dateInWeek = IndexPath() // for creating seven days in tableview

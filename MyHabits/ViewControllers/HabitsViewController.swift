@@ -40,6 +40,7 @@ final class HabitsViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationItem.largeTitleDisplayMode = .always
         habitsCollectionView.reloadData()
+        tabBarController?.tabBar.isHidden = false
     }
     
     //MARK: - private
@@ -148,17 +149,6 @@ extension HabitsViewController: UICollectionViewDataSource, UICollectionViewDele
                 title: "Сегодня", style: .plain, target: nil, action: nil)
             navigationItem.backBarButtonItem?.tintColor = .purple
         }
-        
-//        if indexPath.section == 1 {
-//            let nameOfHabit = HabitsStore.shared.habits[indexPath.item].name
-//            let alert = UIAlertController(title: "УДАЛИТЬ ПРИВЫЧКУ", message: "Вы точно хотите удалить \(nameOfHabit)?", preferredStyle: .alert)
-//            alert.addAction(UIAlertAction(title: "Удалить", style: .default, handler: { action in
-//                store.habits.remove(at: indexPath.item)
-//                collectionView.deleteItems(at: [indexPath])
-//            }))
-//            alert.addAction(UIAlertAction(title: "Отмена", style: .default))
-//            self.present(alert, animated: true)
-//        }
     }
 }
 
