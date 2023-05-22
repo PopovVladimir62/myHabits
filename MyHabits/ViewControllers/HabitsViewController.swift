@@ -33,8 +33,14 @@ final class HabitsViewController: UIViewController {
         prepareViewController()
         addSubviews()
         setupConstrains()
+        habitsCollectionView.reloadData()
     }
-
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        habitsCollectionView.reloadData()
+    }
+    
     //MARK: - private
     
     private func prepareViewController() {
@@ -44,7 +50,15 @@ final class HabitsViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
         navigationItem.rightBarButtonItem?.tintColor = .purple
         self.navigationItem.largeTitleDisplayMode = .always
-
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(clearStored))
+    }
+    
+    @objc private func clearStored() {
+        for i in HabitsStore.shared.habits {
+            i.trackDates = []
+        }
+        habitsCollectionView.reloadData()
     }
     
     @objc private func addTapped() {
@@ -78,7 +92,7 @@ extension HabitsViewController: UICollectionViewDataSource, UICollectionViewDele
         if section == 0 {
             return 1
         } else {
-            return 1//HabitsStore.shared.habits.count
+            return HabitsStore.shared.habits.count
         }
     }
     
@@ -86,21 +100,20 @@ extension HabitsViewController: UICollectionViewDataSource, UICollectionViewDele
         if indexPath.section == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProgressCollectionViewCell.identifier, for: indexPath) as! ProgressCollectionViewCell
             cell.progressBar.progress = HabitsStore.shared.todayProgress
-            cell.progressLabel.text = String(Int(HabitsStore.shared.todayProgress)) + "%"
-
+            cell.progressLabel.text = String(Int(HabitsStore.shared.todayProgress*100)) + "%"
+            
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NewHabitCollectionViewCell.identifier, for: indexPath) as! NewHabitCollectionViewCell
-            cell.counterOfHabits.text = "2"
-            cell.dateOfHabit.text = "каждый день в 08:00"
-            cell.nameOfHabitLabel.text = "Пробежка"
-            cell.checkmarkView.checked = false
+            cell.delegate = self
+            cell.indexPathCell = indexPath
+            cell.setupCell(model: HabitsStore.shared.habits[indexPath.item])
             
             return cell
         }
     }
     
-
+    
     //MARK: - Configure collectionView
     
     private var edgeInset: CGFloat { return 16 }
@@ -133,4 +146,21 @@ extension HabitsViewController: UICollectionViewDataSource, UICollectionViewDele
         16
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if indexPath.section == 1 {
+            //            HabitsStore.shared.habits.remove(at: indexPath.item)
+            //            collectionView.deleteItems(at: [indexPath])
+            print("\(indexPath.item)")
+        }
+    }
+}
+
+//MARK: - Delegate extension
+extension HabitsViewController: addingTodaysDay {
+    func takingToday(indexPath: IndexPath, cell: NewHabitCollectionViewCell) {
+        let store = HabitsStore.shared
+        guard !HabitsStore.shared.habits[indexPath.item].isAlreadyTakenToday else {return}
+        store.track(store.habits[indexPath.item])
+        habitsCollectionView.reloadData()
+    }
 }

@@ -7,9 +7,14 @@
 
 import UIKit
 
+protocol addingTodaysDay: AnyObject {
+    func takingToday(indexPath: IndexPath, cell: NewHabitCollectionViewCell)
+}
+
 class NewHabitCollectionViewCell: UICollectionViewCell {
     
-     var checkmarkView: SSCheckMark!
+    weak var delegate: addingTodaysDay?
+    var indexPathCell = IndexPath()
     
     //MARK: - UI elements
     
@@ -45,14 +50,16 @@ class NewHabitCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    private lazy var chosenImageView: UIView = {
-        let imageView = UIView()
-        imageView.backgroundColor = .red
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.addSubview(checkmarkView)
+    lazy var isAlreadyTakenTodayButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.tintColor = .blue
+        button.setBackgroundImage(UIImage(systemName: "circle"), for: .normal)
+        button.addTarget(self, action: #selector(takenTodayAction), for: .touchUpInside)
         
-        return imageView
+        return button
     }()
+    //MARK: - lifecycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -65,7 +72,29 @@ class NewHabitCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: private
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        counterOfHabits.text = nil
+        dateOfHabit.text = nil
+        nameOfHabitLabel.text = nil
+        isAlreadyTakenTodayButton.tintColor = nil
+    }
+    //MARK: - public
+    
+    func setupCell(model: Habit) {
+        counterOfHabits.text = "\(model.trackDates.count)"
+        dateOfHabit.text = model.dateString
+        nameOfHabitLabel.text = model.name
+        isAlreadyTakenTodayButton.tintColor = model.color
+        if model.isAlreadyTakenToday == true {
+            isAlreadyTakenTodayButton.setBackgroundImage(UIImage(systemName: "checkmark.circle.fill"), for: .normal)
+        } else {
+            isAlreadyTakenTodayButton.setBackgroundImage(UIImage(systemName: "circle"), for: .normal)
+        }
+    }
+    
+    
+    //MARK: - private
     
     private func customizationViewCell() {
         contentView.backgroundColor = .white
@@ -74,13 +103,15 @@ class NewHabitCollectionViewCell: UICollectionViewCell {
     }
     
     private func setupSubviews() {
-        checkmarkView = SSCheckMark()
-        checkmarkView.translatesAutoresizingMaskIntoConstraints = false
-        checkmarkView.backgroundColor = UIColor.white
         addSubview(nameOfHabitLabel)
         addSubview(dateOfHabit)
         addSubview(counterOfHabits)
-        addSubview(checkmarkView)
+        addSubview(isAlreadyTakenTodayButton)
+    }
+    
+    @objc func takenTodayAction() {
+        delegate?.takingToday(indexPath: indexPathCell, cell: self)
+        isAlreadyTakenTodayButton.setBackgroundImage(UIImage(systemName: "checkmark.circle.fill"), for: .normal)
     }
     //MARK: layout
     
@@ -96,10 +127,10 @@ class NewHabitCollectionViewCell: UICollectionViewCell {
             counterOfHabits.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Metric.edgeInsetTwenty),
             counterOfHabits.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Metric.edgeInsetTwenty),
             
-            checkmarkView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            checkmarkView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Metric.edgeInsetTwenty),
-            checkmarkView.widthAnchor.constraint(equalToConstant: 36),
-            checkmarkView.heightAnchor.constraint(equalToConstant: 36)
+            isAlreadyTakenTodayButton.centerYAnchor.constraint(equalTo: centerYAnchor),
+            isAlreadyTakenTodayButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Metric.edgeInsetTwenty),
+            isAlreadyTakenTodayButton.widthAnchor.constraint(equalToConstant: 36),
+            isAlreadyTakenTodayButton.heightAnchor.constraint(equalToConstant: 36)
         ])
     }
 }
