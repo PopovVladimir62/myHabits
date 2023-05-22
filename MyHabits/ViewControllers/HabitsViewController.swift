@@ -50,15 +50,6 @@ final class HabitsViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
         navigationItem.rightBarButtonItem?.tintColor = .purple
         self.navigationItem.largeTitleDisplayMode = .always
-        
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(clearStored))
-    }
-    
-    @objc private func clearStored() {
-        for i in HabitsStore.shared.habits {
-            i.trackDates = []
-        }
-        habitsCollectionView.reloadData()
     }
     
     @objc private func addTapped() {
@@ -92,14 +83,14 @@ extension HabitsViewController: UICollectionViewDataSource, UICollectionViewDele
         if section == 0 {
             return 1
         } else {
-            return HabitsStore.shared.habits.count
+            return store.habits.count
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.section == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProgressCollectionViewCell.identifier, for: indexPath) as! ProgressCollectionViewCell
-            cell.progressBar.progress = HabitsStore.shared.todayProgress
+            cell.progressBar.progress = store.todayProgress
             cell.progressLabel.text = String(Int(HabitsStore.shared.todayProgress*100)) + "%"
             
             return cell
@@ -107,7 +98,7 @@ extension HabitsViewController: UICollectionViewDataSource, UICollectionViewDele
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NewHabitCollectionViewCell.identifier, for: indexPath) as! NewHabitCollectionViewCell
             cell.delegate = self
             cell.indexPathCell = indexPath
-            cell.setupCell(model: HabitsStore.shared.habits[indexPath.item])
+            cell.setupCell(model: store.habits[indexPath.item])
             
             return cell
         }
@@ -148,18 +139,30 @@ extension HabitsViewController: UICollectionViewDataSource, UICollectionViewDele
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.section == 1 {
-            //            HabitsStore.shared.habits.remove(at: indexPath.item)
-            //            collectionView.deleteItems(at: [indexPath])
-            print("\(indexPath.item)")
+            let detailVC = HabitDetailsViewController()
+            navigationController?.pushViewController(detailVC, animated: true)
+            navigationItem.backBarButtonItem = UIBarButtonItem(
+                title: "Сегодня", style: .plain, target: nil, action: nil)
+            navigationItem.backBarButtonItem?.tintColor = .purple
         }
+        
+//        if indexPath.section == 1 {
+//            let nameOfHabit = HabitsStore.shared.habits[indexPath.item].name
+//            let alert = UIAlertController(title: "УДАЛИТЬ ПРИВЫЧКУ", message: "Вы точно хотите удалить \(nameOfHabit)?", preferredStyle: .alert)
+//            alert.addAction(UIAlertAction(title: "Удалить", style: .default, handler: { action in
+//                store.habits.remove(at: indexPath.item)
+//                collectionView.deleteItems(at: [indexPath])
+//            }))
+//            alert.addAction(UIAlertAction(title: "Отмена", style: .default))
+//            self.present(alert, animated: true)
+//        }
     }
 }
 
 //MARK: - Delegate extension
 extension HabitsViewController: addingTodaysDay {
     func takingToday(indexPath: IndexPath, cell: NewHabitCollectionViewCell) {
-        let store = HabitsStore.shared
-        guard !HabitsStore.shared.habits[indexPath.item].isAlreadyTakenToday else {return}
+        guard !store.habits[indexPath.item].isAlreadyTakenToday else {return}
         store.track(store.habits[indexPath.item])
         habitsCollectionView.reloadData()
     }

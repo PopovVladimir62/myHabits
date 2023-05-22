@@ -1,5 +1,7 @@
 import UIKit
 
+let store = HabitsStore.shared
+
 /// Класс для сохранения и изменения привычек пользователя.
 public final class HabitsStore {
     
