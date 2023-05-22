@@ -25,7 +25,6 @@ class NewHabitCollectionViewCell: UICollectionViewCell {
         label.textColor = .blue
         label.numberOfLines = 0
         label.font = UIFont.boldSystemFont(ofSize: 17)
-        label.setContentHuggingPriority(.defaultHigh - 1, for: .vertical)
         
         return label
     }()
@@ -78,6 +77,7 @@ class NewHabitCollectionViewCell: UICollectionViewCell {
         dateOfHabit.text = nil
         nameOfHabitLabel.text = nil
         isAlreadyTakenTodayButton.tintColor = nil
+        nameOfHabitLabel.textColor = nil
     }
     //MARK: - public
     
@@ -86,6 +86,7 @@ class NewHabitCollectionViewCell: UICollectionViewCell {
         dateOfHabit.text = model.dateString
         nameOfHabitLabel.text = model.name
         isAlreadyTakenTodayButton.tintColor = model.color
+        nameOfHabitLabel.textColor = model.color
         if model.isAlreadyTakenToday == true {
             isAlreadyTakenTodayButton.setBackgroundImage(UIImage(systemName: "checkmark.circle.fill"), for: .normal)
         } else {

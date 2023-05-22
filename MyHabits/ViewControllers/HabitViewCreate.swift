@@ -158,7 +158,6 @@ class HabitViewCreate: UIViewController {
         print("save new habit")
         let newHabit = Habit(name: nameOfHabit.text!, date: dateOfHabit, color: colorButton.tintColor)
         HabitsStore.shared.habits.append(newHabit)
-        print(HabitsStore.shared.habits[0].trackDates.count)
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -166,6 +165,7 @@ class HabitViewCreate: UIViewController {
         let colorPicker = UIColorPickerViewController()
         colorPicker.delegate = self
         colorButton.tintColor = colorPicker.selectedColor
+        nameOfHabit.textColor = colorPicker.selectedColor
         present(colorPicker, animated: true)
     }
     

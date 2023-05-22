@@ -38,6 +38,7 @@ final class HabitsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationItem.largeTitleDisplayMode = .always
         habitsCollectionView.reloadData()
     }
     
@@ -141,6 +142,8 @@ extension HabitsViewController: UICollectionViewDataSource, UICollectionViewDele
         if indexPath.section == 1 {
             let detailVC = HabitDetailsViewController()
             navigationController?.pushViewController(detailVC, animated: true)
+            detailVC.numberOfHabit = indexPath.item
+            detailVC.nameOfHabit = store.habits[indexPath.item].name
             navigationItem.backBarButtonItem = UIBarButtonItem(
                 title: "Сегодня", style: .plain, target: nil, action: nil)
             navigationItem.backBarButtonItem?.tintColor = .purple
