@@ -17,7 +17,7 @@ final class HabitsViewController: UIViewController {
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layOut)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.backgroundColor = .systemGray3
+        collectionView.backgroundColor = .systemGray4
         collectionView.register(ProgressCollectionViewCell.self, forCellWithReuseIdentifier: ProgressCollectionViewCell.identifier)
         collectionView.register(NewHabitCollectionViewCell.self, forCellWithReuseIdentifier: NewHabitCollectionViewCell.identifier)
         
@@ -94,6 +94,7 @@ extension HabitsViewController: UICollectionViewDataSource, UICollectionViewDele
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProgressCollectionViewCell.identifier, for: indexPath) as! ProgressCollectionViewCell
             cell.progressBar.progress = store.todayProgress
             cell.progressLabel.text = String(Int(HabitsStore.shared.todayProgress*100)) + "%"
+            ProgressCollectionViewCell.addShadow(for: cell)
             
             return cell
         } else {
@@ -101,6 +102,7 @@ extension HabitsViewController: UICollectionViewDataSource, UICollectionViewDele
             cell.delegate = self
             cell.indexPathCell = indexPath
             cell.setupCell(model: store.habits[indexPath.item])
+            NewHabitCollectionViewCell.addShadow(for: cell)
             
             return cell
         }

@@ -10,7 +10,7 @@ import UIKit
 final class DetailsTableViewCell: UITableViewCell {
     
     var indexPathCell = 0 // takes the index of the item selection in the collection
-    var dateInWeek = IndexPath() // for creating seven days in tableview
+    var appDates = IndexPath() // number of dates when you starting your app
     var dateOfHabit = Date()
     let dateFormatter = DateFormatter()
     
@@ -52,7 +52,7 @@ final class DetailsTableViewCell: UITableViewCell {
     }
     //MARK: public
     func setupCell(model: [Date]) {
-        dateOfHabit = model[store.dates.count - (dateInWeek.row + 1)] // mapping from larger to smaller date in tableView
+        dateOfHabit = model[store.dates.count - (appDates.row + 1)] // mapping from larger to smaller date in tableView
         dateFormatter.dateFormat = "d MMM yyyy"
         dateLabel.text = dateFormatter.string(from: dateOfHabit)
         

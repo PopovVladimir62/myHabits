@@ -120,13 +120,16 @@ final class NewHabitCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             nameOfHabitLabel.topAnchor.constraint(equalTo: topAnchor, constant: Metric.edgeInsetTwenty),
             nameOfHabitLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Metric.edgeInsetTwenty),
+            nameOfHabitLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -50),
             
             dateOfHabit.topAnchor.constraint(equalTo: nameOfHabitLabel.bottomAnchor, constant: 4),
             dateOfHabit.leadingAnchor.constraint(equalTo: nameOfHabitLabel.leadingAnchor),
-            
-            counterOfHabits.topAnchor.constraint(equalTo: dateOfHabit.bottomAnchor, constant: 30),
+            dateOfHabit.heightAnchor.constraint(equalToConstant: 16),
+
+            counterOfHabits.topAnchor.constraint(lessThanOrEqualTo: dateOfHabit.bottomAnchor, constant: 30),
             counterOfHabits.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Metric.edgeInsetTwenty),
             counterOfHabits.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Metric.edgeInsetTwenty),
+            counterOfHabits.heightAnchor.constraint(equalToConstant: 18),
             
             isAlreadyTakenTodayButton.centerYAnchor.constraint(equalTo: centerYAnchor),
             isAlreadyTakenTodayButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Metric.edgeInsetTwenty),

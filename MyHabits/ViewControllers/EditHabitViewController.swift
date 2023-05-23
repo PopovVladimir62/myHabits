@@ -10,6 +10,7 @@ import UIKit
 final class EditHabitViewController: HabitViewCreate {
     
     var numberOfHabit = 0
+    //MARK: lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,7 +22,7 @@ final class EditHabitViewController: HabitViewCreate {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = true
     }
-    
+    //MARK: - overriding
     override func customizeNavigationBar() {
         super.customizeNavigationBar()
         navigationItem.title = "Править"
@@ -35,6 +36,18 @@ final class EditHabitViewController: HabitViewCreate {
         saveChanges(data: store.habits)
         self.navigationController?.popViewController(animated: true)
     }
+    
+    @objc override func deleteHabit() {
+        let nameOfHabit = store.habits[numberOfHabit].name
+        let alert = UIAlertController(title: "УДАЛИТЬ ПРИВЫЧКУ", message: "Вы точно хотите удалить \(nameOfHabit)?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Удалить", style: .default, handler: { action in
+            store.habits.remove(at: self.numberOfHabit)
+            self.navigationController?.popToRootViewController(animated: true)
+        }))
+        alert.addAction(UIAlertAction(title: "Отмена", style: .default))
+        self.present(alert, animated: true)
+    }
+    //MARK: - private
     
     private func setupData(model: Habit) {
         nameOfHabit.text = model.name
@@ -50,15 +63,5 @@ final class EditHabitViewController: HabitViewCreate {
         data[numberOfHabit].date = dateOfHabit
     }
     
-    @objc override func deleteHabit() {
-        let nameOfHabit = store.habits[numberOfHabit].name
-        let alert = UIAlertController(title: "УДАЛИТЬ ПРИВЫЧКУ", message: "Вы точно хотите удалить \(nameOfHabit)?", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Удалить", style: .default, handler: { action in
-            store.habits.remove(at: self.numberOfHabit)
-            self.navigationController?.popToRootViewController(animated: true)
-        }))
-        alert.addAction(UIAlertAction(title: "Отмена", style: .default))
-        self.present(alert, animated: true)
-    }
     
 }

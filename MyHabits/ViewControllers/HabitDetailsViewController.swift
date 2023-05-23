@@ -77,11 +77,17 @@ extension HabitDetailsViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: DetailsTableViewCell.identifier, for: indexPath) as! DetailsTableViewCell
         cell.indexPathCell = numberOfHabit
-        cell.dateInWeek = indexPath
+        cell.appDates = indexPath
         cell.setupCell(model: store.dates)
-        
+        if indexPath.row == 0 {
+            cell.dateLabel.text = "Сегодня"
+        } else if indexPath.row == 1 {
+            cell.dateLabel.text = "Вчера"
+        }
         return cell
     }
-
     
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        "АКТИВНОСТЬ"
+    }
 }
