@@ -7,14 +7,23 @@
 
 import UIKit
 
+enum Condition {
+    case add // create new habit
+    case edit // edits the selected habit
+}
+
 class HabitViewCreate: UIViewController {
     
+    var condition: Condition = .add
     var dateOfHabit = Date()
     let dateFormatter = DateFormatter()
+    
+    //for edit condition
+    var numberOfHabit = 0
 
     //MARK: - UI elements
     //habit's name
-    let nameOfHabitStackView: UIStackView = {
+    private let nameOfHabitStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
@@ -24,7 +33,7 @@ class HabitViewCreate: UIViewController {
         return stackView
     }()
     
-    let titleLabel: UILabel = {
+    private let titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.boldSystemFont(ofSize: 13)
@@ -44,7 +53,7 @@ class HabitViewCreate: UIViewController {
     }()
     //habit's color
     
-    let colorNameLabel: UILabel = {
+    private let colorNameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.boldSystemFont(ofSize: 13)
@@ -53,7 +62,7 @@ class HabitViewCreate: UIViewController {
         return label
     }()
     
-    lazy var colorButton: UIButton = {
+    private lazy var colorButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setBackgroundImage(UIImage(systemName: "circle.fill"), for: .normal)
@@ -64,7 +73,7 @@ class HabitViewCreate: UIViewController {
     }()
     //habit's time
     
-    let timeTitleLabel: UILabel = {
+    private let timeTitleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.boldSystemFont(ofSize: 13)
@@ -73,7 +82,7 @@ class HabitViewCreate: UIViewController {
         return label
     }()
     
-    let timeNameLabel: UILabel = {
+    private let timeNameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 17)
@@ -82,7 +91,7 @@ class HabitViewCreate: UIViewController {
         return label
     }()
     
-    lazy var timeDateLabel: UILabel = {
+    private lazy var timeDateLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 17)
@@ -92,7 +101,7 @@ class HabitViewCreate: UIViewController {
         return label
     }()
     
-    lazy var timePicker: UIDatePicker = {
+    private lazy var timePicker: UIDatePicker = {
         let timePicker = UIDatePicker()
         timePicker.translatesAutoresizingMaskIntoConstraints = false
         timePicker.datePickerMode = .time
@@ -103,7 +112,7 @@ class HabitViewCreate: UIViewController {
         return timePicker
     }()
     
-    lazy var deleteButton: UIButton = {
+    private lazy var deleteButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Удалить привычку", for: .normal)
@@ -121,6 +130,7 @@ class HabitViewCreate: UIViewController {
         super.viewDidLoad()
         prepareViewController()
         addSubviews()
+        setupData(model: store.habits[numberOfHabit])
         setupConstrains()
     }
     
@@ -129,16 +139,19 @@ class HabitViewCreate: UIViewController {
         customizeNavigationBar()
     }
 
-    //MARK: - public
+    //MARK: private
     //navigationbar + button methods
-    func customizeNavigationBar() {
+    private func customizeNavigationBar() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             title: "Сохранить", style: .plain, target: self, action: #selector(saveHabit))
         navigationItem.rightBarButtonItem?.tintColor = .purple
-        navigationItem.title = "Создать"
+        if condition == .add{
+            navigationItem.title = "Создать"
+        } else {
+            navigationItem.title = "Править"
+        }
     }
     
-    //MARK: private
     private func prepareViewController() {
         view.backgroundColor = .white
         navigationItem.largeTitleDisplayMode = .never
@@ -157,19 +170,38 @@ class HabitViewCreate: UIViewController {
         view.addSubview(deleteButton)
     }
     
-    func timeFormat() {
+    private func setupData(model: Habit) {
+        if condition == .edit {
+            nameOfHabit.text = model.name
+            colorButton.tintColor = model.color
+            dateOfHabit = model.date
+            timeFormat()
+            deleteButton.isHidden = false
+        }
+    }
+    
+    private func timeFormat() {
         dateFormatter.dateFormat = "h:mm a"
         timeDateLabel.text = dateFormatter.string(from: dateOfHabit)
     }
+    
+    private func saveChanges(data: [Habit]) {
+        data[numberOfHabit].color = colorButton.tintColor
+        data[numberOfHabit].name = nameOfHabit.text!
+        data[numberOfHabit].date = dateOfHabit
+    }
     //MARK: - #selectors
-    @objc func saveHabit() {
+    @objc private func saveHabit() {
         if nameOfHabit.text == "" {
             nameOfHabit.shake()
             return
         }
-        print("save new habit")
-        let newHabit = Habit(name: nameOfHabit.text!, date: dateOfHabit, color: colorButton.tintColor)
-        HabitsStore.shared.habits.append(newHabit)
+        if condition == .add {
+            let newHabit = Habit(name: nameOfHabit.text!, date: dateOfHabit, color: colorButton.tintColor)
+            HabitsStore.shared.habits.append(newHabit)
+        } else {
+            saveChanges(data: store.habits)
+        }
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -181,22 +213,29 @@ class HabitViewCreate: UIViewController {
         present(colorPicker, animated: true)
     }
     
-    @objc func textFieldShouldReturn() -> Bool {
+    @objc private func textFieldShouldReturn() -> Bool {
         return view.endEditing(true)
     }
     
-    @objc func setCurrentTime() {
+    @objc private func setCurrentTime() {
         self.dateOfHabit = self.timePicker.date
         timeFormat()
     }
     
-    @objc func deleteHabit() {
-        
+    @objc private func deleteHabit() {
+        let nameOfHabit = store.habits[numberOfHabit].name
+        let alert = UIAlertController(title: "УДАЛИТЬ ПРИВЫЧКУ", message: "Вы точно хотите удалить \(nameOfHabit)?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Удалить", style: .default, handler: { action in
+            store.habits.remove(at: self.numberOfHabit)
+            self.navigationController?.popToRootViewController(animated: true)
+        }))
+        alert.addAction(UIAlertAction(title: "Отмена", style: .default))
+        self.present(alert, animated: true)
     }
 
     //MARK: - layout
     
-    func setupConstrains() {
+    private func setupConstrains() {
         let safeArea = view.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
             nameOfHabitStackView.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 21),

@@ -53,7 +53,8 @@ final class HabitDetailsViewController: UIViewController {
         navigationItem.backBarButtonItem = UIBarButtonItem(
             title: "Отменить", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem?.tintColor = .purple
-        let editVC = EditHabitViewController()
+        let editVC = HabitViewCreate()
+        editVC.condition = .edit
         editVC.numberOfHabit = numberOfHabit
         navigationController?.pushViewController(editVC, animated: true)
     }
